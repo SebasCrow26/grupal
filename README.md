@@ -86,7 +86,3 @@ El script imprime el flujo completo: conexion, creacion del fondo, aportes, hash
 ## Limitacion importante
 
 Este proyecto es un simulador academico. Para operar con dinero real en Colombia, Grupal tendria que trabajar con una entidad vigilada que custodie los fondos y cumpla procesos de KYC/AML. El contrato y la app muestran la logica de transparencia, pero no constituyen una plataforma financiera lista para produccion.
-
-## Opinion rapida
-
-Como trabajo universitario, el proyecto esta bien encaminado: tiene problema claro, demo visual convincente, contrato funcional, simulacion backend y discusion legal. Su punto mas fuerte es la experiencia de presentacion. Su principal limite es que todavia no integra Web3.py, wallet real ni pruebas automatizadas; para el alcance de clase, eso es aceptable si se presenta como prototipo.
