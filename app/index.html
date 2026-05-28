@@ -8,6 +8,17 @@
 <meta name="apple-mobile-web-app-title" content="Grupal">
 <meta name="theme-color" content="#0a0a0f">
 <title>Grupal — Finanzas Grupales</title>
+<!--
+  Grupal - prototipo academico DeFi.
+
+  Este archivo es autocontenido para facilitar la revision del profesor:
+  - HTML: define las pantallas, modales y elementos de la app.
+  - CSS: construye la apariencia de billetera fintech movil.
+  - JavaScript: simula fondos, aportes, autorizaciones, hashes y estados.
+
+  En una version productiva, el CSS y el JavaScript se separarian en archivos
+  propios, y las acciones de aporte llamarian un backend conectado con Web3.py.
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -2157,9 +2168,19 @@ select option { background: var(--bg3); }
 </div>
 
 <script>
-// ═══ DATA ═══
+// ═════════════════════════════════════════════════════════════════════════════
+// ESTADO PRINCIPAL DE LA DEMO
+// ----------------------------------------------------------------------------
+// La app no usa backend real: todo vive en memoria y se persiste en localStorage.
+// Esto permite crear fondos durante la sustentacion sin instalar dependencias.
+// En produccion, estos datos vendrian de una API y del contrato VacaPool.
+// ═════════════════════════════════════════════════════════════════════════════
 let activeFundId = null;
 let tourStep = 0;
+
+// Pasos del recorrido guiado. Cada paso apunta a un selector visible de la app.
+// El tour ayuda a explicar la propuesta sin que el profesor tenga que descubrir
+// manualmente cada modulo.
 const tourSteps = [
   {
     selector: '.home-greeting',
@@ -2227,6 +2248,10 @@ const tourSteps = [
   }
 ];
 
+// Fondos precargados de demostracion. Cada fondo refleja, de forma simplificada,
+// el mismo estado que tendria el smart contract: meta, acumulado, hash, regla
+// de decision y participantes. La UI usa estos objetos para pintar progreso,
+// estados y acciones disponibles.
 const funds = {
   viaje: {
     title: '✈️ Viaje Cartagena', recaudado: '$680,000', meta: '$1,000,000', pct: 68,
@@ -2294,7 +2319,8 @@ function saveFunds() {
   localStorage.setItem('grupalFunds', JSON.stringify(funds));
 }
 
-// ═══ NAVIGATION ═══
+// ═══ NAVEGACION ENTRE PANTALLAS ═══
+// Activa una seccion principal de la app y sincroniza la barra inferior.
 function switchScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -2303,7 +2329,8 @@ function switchScreen(id) {
   if (nav) nav.classList.add('active');
 }
 
-// ═══ MODALS ═══
+// ═══ MODALES ═══
+// Los modales se usan para detalles de fondo, aporte, invitacion, PIN y cierre.
 function openModal(id) {
   document.getElementById(id).classList.add('open');
 }
@@ -2313,7 +2340,9 @@ function closeModal(id, e) {
   }
 }
 
-// ═══ INTERACTIVE TOUR ═══
+// ═══ RECORRIDO INTERACTIVO ═══
+// Oscurece la app y resalta elementos clave. Es una herramienta de sustentacion:
+// permite explicar el producto por pasos sin salir de la demo.
 function showTourStep(index) {
   if (index < 0 || index >= tourSteps.length) return;
   tourStep = index;
@@ -2406,7 +2435,9 @@ function exitTour() {
   toast('Recorrido finalizado. ¡Que disfrutes Grupal! 🚀');
 }
 
-// ═══ FUND DETAIL ═══
+// ═══ DETALLE DE FONDO ═══
+// Construye el modal que muestra participantes, avance, hash y regla de negocio.
+// Esta es la pantalla donde mejor se ve la relacion entre app, Python y Solidity.
 function openFundDetail(id) {
   const f = funds[id];
   activeFundId = id;
@@ -2553,7 +2584,7 @@ function confirmCloseFund() {
   toast('Fondo cerrado con resumen final');
 }
 
-// ═══ FILTERS ═══
+// ═══ FILTROS DE FONDOS ═══
 function filterFunds(status, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => { b.className = 'tab-btn inactive'; });
   btn.className = 'tab-btn active';
@@ -2566,7 +2597,9 @@ function filterFunds(status, btn) {
   });
 }
 
-// ═══ CALCULATOR ═══
+// ═══ CALCULADORA DE RENDIMIENTO ═══
+// Calcula interes simple o compuesto para mostrar el potencial de fondos
+// grupales que se dejan invertidos durante un periodo.
 function calcUpdate() {
   const cap = parseFloat(document.getElementById('c-capital').value) || 0;
   const tasa = parseFloat(document.getElementById('c-tasa').value) || 0;
@@ -2584,7 +2617,7 @@ function calcUpdate() {
   document.getElementById('cr-mensual').textContent = fmt(mensual);
 }
 
-// ═══ CREATE FUND ═══
+// ═══ CREACION Y ACTUALIZACION DE FONDOS ═══
 function formatCurrencyInput(val) {
   let num = val.replace(/\D/g, '');
   if (!num) return '';
@@ -2800,7 +2833,7 @@ function addActivityRow(desc, amount, hash, status, tone) {
   list.prepend(row);
 }
 
-// ═══ TX DETAIL ═══
+// ═══ DETALLE DE TRANSACCION ═══
 function showTx(hash, desc, amount, status) {
   document.getElementById('tx-hash-detail').textContent = hash;
   document.getElementById('tx-desc-detail').textContent = desc;
@@ -2809,7 +2842,10 @@ function showTx(hash, desc, amount, status) {
   openModal('modal-tx');
 }
 
-// ═══ APORTE ═══
+// ═══ APORTE SIMULADO ═══
+// Marca como pagado al siguiente participante pendiente, recalcula progreso y
+// agrega una fila al historial. En produccion, aqui se esperaria confirmacion
+// real de la blockchain antes de actualizar la interfaz.
 function selectPayment(el) {
   document.querySelectorAll('.payment-option').forEach(o => {
     o.classList.remove('selected');
@@ -2840,12 +2876,12 @@ function doAporte() {
   toast('Aporte realizado y registrado en blockchain ✓');
 }
 
-// ═══ CARD FLIP ═══
+// ═══ TARJETA VIRTUAL ═══
 function flipCard() {
   document.getElementById('card-flip').classList.toggle('flipped');
 }
 
-// ═══ TOGGLES ═══
+// ═══ CONFIGURACION Y TOGGLES ═══
 function toggleEl(el) {
   el.classList.toggle('on');
   el.classList.toggle('off');
@@ -2859,7 +2895,7 @@ function toggleBiometria(row) {
   toast('Biometría ' + (tog.classList.contains('on') ? 'activada' : 'desactivada'));
 }
 
-// ═══ LEGAL ACCORDION ═══
+// ═══ ACORDEON LEGAL ═══
 function toggleLegal(item) {
   const body = item.querySelector('.legal-item-body');
   const chev = item.querySelector('.legal-chevron');
@@ -2867,7 +2903,7 @@ function toggleLegal(item) {
   chev.classList.toggle('open');
 }
 
-// ═══ TOAST ═══
+// ═══ NOTIFICACIONES BREVES ═══
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -2876,7 +2912,7 @@ function toast(msg) {
   t._tid = setTimeout(() => t.classList.remove('show'), 2400);
 }
 
-// ═══ PIN PAD ═══
+// ═══ TECLADO PIN SIMULADO ═══
 (function buildPin() {
   const pad = document.getElementById('pin-pad');
   if (!pad) return;
@@ -2901,7 +2937,7 @@ function toast(msg) {
   });
 })();
 
-// ═══ SPLASH ═══
+// ═══ SPLASH INICIAL ═══
 setTimeout(() => {
   const splash = document.getElementById('splash');
   splash.style.transition = 'opacity 0.5s ease';
