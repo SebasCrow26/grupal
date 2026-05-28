@@ -1,0 +1,173 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage{float}
+\usetikzlibrary{shapes.geometric, arrows, positioning, shadow.blur}
+\geometry{top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm}
+
+% Definición de estilos para el diagrama (Mejorados y con alineación central)
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3.8cm, minimum height=1cm,text centered, draw=black, fill=blue!10, blur shadow, font=\small\sffamily, align=center]
+\tikzstyle{process} = [rectangle, minimum width=3.8cm, minimum height=1cm, text centered, draw=black, fill=orange!10, blur shadow, font=\small\sffamily, align=center]
+\tikzstyle{decision} = [diamond, aspect=2, minimum width=3.8cm, minimum height=1cm, text centered, draw=black, fill=green!10, blur shadow, font=\small\sffamily, align=center]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\title{Plataforma Fintech Descentralizada para la Gestión Financiera Grupal}
+\author{Julián Duarte \\ Sebastián Ramos \\ Alejandra Rivera}
+\date{\today}
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip 2em%
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE \@title \par}%
+    \vskip 1.5em%
+    {\large
+      \lineskip .5em%
+      \begin{tabular}[t]{c}%
+        \@author
+      \end{tabular}\par}%
+    \vskip 1em%
+    {\large Universidad Externado de Colombia \par}%
+    \vskip 0.5em%
+    {\large DeFi 1 \par}%
+    \vskip 1em%
+    {\large \@date}%
+  \end{center}%
+  \par
+  \vskip 1.5em}
+\makeatother
+
+\begin{document}
+
+\maketitle
+
+\section*{Introducción: Finanzas para humanos}
+
+Seguramente te ha pasado: estás en una cena increíble con amigos, la comida estuvo perfecta y la compañía inmejorable. Pero llega el momento de la cuenta y el ambiente se tensa. Empiezan las calculadoras de los celulares, los ``yo solo pedí una entrada'', los ``paga tú y mañana te envío'' y la inevitable lluvia de comprobantes de transferencia por WhatsApp que nadie termina de revisar. 
+
+Este proyecto no nace solo de la tecnología, sino de la necesidad de devolverle la armonía a estos momentos. Queremos usar las herramientas más avanzadas de la actualidad como el \textbf{Fintech} y las \textbf{Finanzas Descentralizadas (DeFi)} para algo muy sencillo: que el dinero entre amigos deje de ser un dolor de cabeza. A través de la \textbf{Blockchain} y los \textbf{Smart Contracts}, buscamos que la confianza no dependa de una persona, sino de un código transparente que trabaje por nosotros.
+
+\section*{La pesadilla de ``la vaca'': Una historia conocida}
+
+Imagina que Alejandra, Sebastián y Julián deciden ir de viaje el próximo fin de semana. Como buenos amigos, acuerdan hacer una caja común para el transporte y el alojamiento. Alejandra, que siempre es la más organizada, se ofrece a recibir el dinero. 
+
+A partir de ahí, comienza la serie de eventos desafortunados:
+\begin{itemize}
+    \item Julián envió la transferencia, pero el banco se demoró en reflejarla. Alejandra no sabe si creerle o no.
+    \item Sebastián se olvidó de su parte y Alejandra tiene que cobrarle tres veces, lo cual es incómodo para ambos.
+    \item Al final del viaje, sobra un poco de dinero, pero nadie recuerda exactamente cuánto puso cada uno al principio, por lo que la repartición se vuelve un caos.
+\end{itemize}
+
+Esta situación es el pan de cada día en grupos de amigos, familias y pequeños emprendimientos. El problema real no es la falta de dinero, sino la \textbf{falta de una estructura transparente}. Actualmente, dependemos de la memoria de alguien, de hilos de chat interminables y de una gestión manual que es lenta y estresante. 
+
+¿Y si hubiera una forma en que el dinero se administrara solo? ¿Y si mientras ahorramos para ese viaje, la plata pudiera ir creciendo sola mediante una inversión segura? De esa pregunta nace nuestra propuesta: una plataforma donde el dinero se mueve con la misma facilidad y confianza con la que fluye la conversación en esa cena con amigos.
+
+\section*{Nuestros Objetivos: Hacia una gestión inteligente}
+
+Con este proyecto, no solo queremos construir una aplicación, sino establecer un nuevo estándar de confianza en cómo grupos de personas manejan su capital.
+
+\subsection*{Objetivo General}
+Desarrollar un prototipo de plataforma fintech descentralizada que automatice la recolección, administración e inversión de fondos grupales, garantizando transparencia total mediante contratos inteligentes.
+
+\subsection*{Objetivos Específicos}
+\begin{itemize}
+    \item \textbf{Automatizar la gestión de gastos:} Diseñar un sistema que calcule y recolecte de forma exacta los aportes individuales para gastos compartidos, eliminando el error humano.
+    \item \textbf{Garantizar la equidad en las inversiones:} Implementar un algoritmo que distribuya los dividendos de inversiones conjuntas de forma proporcional al capital aportado por cada miembro.
+    \item \textbf{Demostrar la viabilidad tecnológica:} Construir un prototipo funcional que combine dos potentes herramientas: 
+    \begin{itemize}
+        \item \textbf{Solidity:} Actuará como nuestra ``ley digital'' o un notario automático. Usaremos este lenguaje para crear los \textit{Smart Contracts}, que aseguran que las reglas del grupo se cumplan sin excepciones (por ejemplo, que nadie pueda retirar fondos sin el consenso de los demás).
+        \item \textbf{Python:} Será el ``motor de comunicación'' del proyecto. Su función es recibir las órdenes sencillas que tú das en la aplicación y traducirlas automáticamente en instrucciones seguras para la blockchain (esto significa que Python hace el trabajo difícil de conectarse con la red y ejecutar los pagos por ti, para que tu experiencia como usuario sea tan fácil como enviar un mensaje por chat).
+    \end{itemize}
+\end{itemize}
+
+\section*{Nuestra Propuesta: Del Caos al Contrato Inteligente}
+
+Para que la historia de Alejandra, Sebastián y Julián tenga un final feliz, nuestra propuesta no se limita a una simple calculadora de gastos. Planteamos un ecosistema donde la tecnología actúa como el garante imparcial de la confianza. 
+
+\subsection*{Arquitectura del Sistema: Los Tres Pilares}
+Nuestra plataforma se sostiene sobre tres componentes que trabajan en total armonía, asegurando que cada peso aportado esté siempre bajo control:
+
+\begin{enumerate}
+    \item \textbf{La Bóveda Digital (Solidity):} Utilizaremos contratos inteligentes para crear una ``bóveda'' inviolable. A diferencia de entregarle el dinero a un amigo, los fondos permanecen en la blockchain y solo pueden liberarse si se cumplen las condiciones preestablecidas por el grupo.
+    \item \textbf{El Motor Analítico (Python):} Queremos que el dinero trabaje para el grupo. Python será el encargado de monitorear las mejores oportunidades de inversión en protocolos DeFi y calcular exactamente cuánto le corresponde a cada miembro, incluyendo los intereses generados, eliminando cualquier duda en la repartición final.
+    \item \textbf{La Ventana al Usuario (Interfaz):} Una aplicación intuitiva donde, en lugar de revisar hilos de WhatsApp, los amigos pueden ver en tiempo real cómo crece su fondo y validar que todos han cumplido con su parte.
+\end{enumerate}
+
+\subsection*{Diagrama de Flujo: Un Sistema, Dos Caminos}
+
+Nuestra plataforma está diseñada para ser flexible. Dependiendo de la meta del grupo, el sistema puede actuar como un procesador de pagos inmediato o como un fondo de inversión inteligente:
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=14cm, width=\textwidth, keepaspectratio]{diagrama_flujo.png}
+\caption{Visualización detallada del flujo operativo del proyecto - Elaborado con Mermaid.js.}
+\label{fig:flujo_completo}
+\end{figure}
+
+\subsection*{Fases de Desarrollo: El Camino a Seguir}
+Para asegurar la viabilidad de este prototipo, hemos trazado una ruta clara dividida en tres etapas críticas:
+
+\begin{itemize}
+    \item \textbf{Etapa 1: Codificación de la Confianza:} Nos enfocaremos exclusivamente en Solidity para programar las reglas de la \textit{Vaca Pool}. El objetivo es tener un contrato que reciba fondos, permita ejecutar pagos a terceros y habilite el envío a protocolos DeFi.
+    \item \textbf{Etapa 2: Inteligencia y Conectividad:} Implementaremos el motor en Python. Este decidirá el flujo del dinero basándose en la configuración del grupo y proyectará los repartos finales tras descontar los gastos realizados.
+    \item \textbf{Etapa 3: Pulido y Validación:} Realizaremos pruebas de estrés simulando ambos escenarios: un pago rápido de una cena y un ahorro grupal de un mes para un viaje, asegurando que en ambos casos la transparencia sea total.
+\end{itemize}
+\section*{Fase de Implementación: Interfaz y Simulación del Smart Contract}
+
+Durante la fase de desarrollo del prototipo de la aplicación, nos enfocamos en construir una Interfaz de Usuario (UI) y Experiencia de Usuario (UX) que cierre la brecha entre la complejidad de la tecnología Blockchain y la simplicidad que exige el usuario final. 
+
+\subsection*{1. Rediseño Premium UI/UX: Estética ``Frost \& Violet''}
+Para cumplir con nuestro objetivo de hacer que el dinero fluya de manera intuitiva y amigable, implementamos un diseño inspirado en líderes fintech como Nubank y Nequi, integrando elementos visuales de seguridad propios de MetaMask.
+\begin{itemize}
+    \item \textbf{Accesibilidad y Claridad:} Se implementó una paleta de colores clara (fondos hielo y superficies blancas) con acentos violetas vibrantes, asegurando que la lectura de saldos y actividades sea inmediata.
+    \item \textbf{Glassmorphism:} Uso de transparencias y efectos de desenfoque (\textit{backdrop-filter}) en los menús y ventanas modales, aportando una sensación de tecnología de punta y profundidad en la interfaz.
+    \item \textbf{Lenguaje Humano (UX Copywriting):} Reemplazamos la jerga técnica compleja (ej. ``Smart Contract'' por ``Contrato Seguro'' y ``Hash'' por ``Recibo Blockchain''), haciendo que cualquier persona, independientemente de su nivel de conocimiento cripto, entienda lo que ocurre con su dinero.
+\end{itemize}
+
+\subsection*{2. Onboarding Educativo: Tour Interactivo Dinámico}
+La confianza nace del entendimiento. Por ello, programamos en JavaScript puro un sistema de \textbf{Spotlight Dinámico} (Recorrido Interactivo). Este sistema oscurece la pantalla e ilumina de forma secuencial cada elemento clave de la aplicación (como el saldo disponible, la sección de inversiones DeFi y el historial blockchain). El código calcula automáticamente las coordenadas de los botones en la pantalla para posicionar el foco y realizar \textit{scroll} automático, guiando al usuario paso a paso por las funcionalidades de los fondos grupales.
+
+\subsection*{3. Simulación y Estructura del Smart Contract en el Frontend}
+En esta etapa, el Frontend maqueta el comportamiento de los contratos inteligentes (\textit{Smart Contracts}) en Solidity. La lógica de autorización y consenso grupal fue modelada en JavaScript para demostrar el funcionamiento de la ``Bóveda Digital''. 
+
+A nivel de código, un fondo se define mediante la siguiente estructura de datos que emula el estado en la blockchain:
+\begin{verbatim}
+funds = {
+  id_fondo: {
+    title: 'Arriendo apartamento',
+    recaudado: '$1,800,000', 
+    meta: '$1,800,000', 
+    pct: 100, // Porcentaje de completitud
+    hash: '0x2e5d...1f44', // Recibo Blockchain simulado
+    decision: { 
+      status: 'Fondo completo', 
+      next: 'Ejecutar pago al arrendador', 
+      rule: 'Pago permitido porque todos aportaron', 
+      action: 'Cerrar fondo' 
+    },
+    participants: [
+      { name: 'Sebastián Ramos', amount: '$600,000', paid: true },
+      // ... otros participantes
+    ]
+  }
+}
+\end{verbatim}
+Esta estructura refleja exactamente lo que se almacenará en el Smart Contract:
+\begin{enumerate}
+    \item \textbf{Transparencia Inmutable:} El \texttt{hash} vincula visualmente el fondo de la app con el recibo en la blockchain.
+    \item \textbf{Consenso Automatizado (\texttt{decision.rule}):} El frontend simula la validación donde el dinero solo se libera (o la tarjeta virtual solo se activa) si el \texttt{pct} alcanza el 100\% y todos los participantes han pagado (\texttt{paid: true}). Esto cumple con nuestro objetivo específico de \textit{garantizar la equidad y seguridad}.
+\end{enumerate}
+
+Esta implementación valida nuestro objetivo principal: demostrar que la gestión grupal puede ser transparente mediante reglas de código, presentadas a través de una aplicación intuitiva y libre de fricciones.
+
+\end{document}
